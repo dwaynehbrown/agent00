@@ -4,20 +4,25 @@ import { Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { signIn, signOut } from 'next-auth/react';
+
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 import Image from 'next/image';
 
 const navigation = [
   { name: 'Dashboard', href: '/' },
-  { name: 'Playground', href: '/playground' }
+  { name: 'Business', href: '/business' },
+  { name: 'Connections', href: '/connections' },
+  { name: 'Members', href: '/members' }
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar() {
   const pathname = usePathname();
+  const { user, error, isLoading } = useUser();
 
   return (
     <Disclosure as="nav" className="bg-white shadow-sm">
@@ -50,7 +55,7 @@ export default function Navbar({ user }: { user: any }) {
                   </svg>
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item) => (
+                  {user && navigation.map((item) => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -91,7 +96,7 @@ export default function Navbar({ user }: { user: any }) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {user ? (
+                      {user ? (<>
                         <Menu.Item>
                           {({ active }) => (
                             <button
@@ -99,12 +104,38 @@ export default function Navbar({ user }: { user: any }) {
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => signOut()}
+                            >
+                              {user?.name}
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={classNames(
+                                active ? 'bg-gray-100' : '',
+                                'flex w-full px-4 py-2 text-sm text-gray-700'
+                              )}
+                              onClick={() => window.location.href = "/api/auth/login"}
+                            >
+                              Switch Org Context
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={classNames(
+                                active ? 'bg-gray-100' : '',
+                                'flex w-full px-4 py-2 text-sm text-gray-700'
+                              )}
+                              onClick={() => window.location.href = "/api/auth/logout"}
                             >
                               Sign out
                             </button>
                           )}
                         </Menu.Item>
+                      </>
                       ) : (
                         <Menu.Item>
                           {({ active }) => (
@@ -113,7 +144,7 @@ export default function Navbar({ user }: { user: any }) {
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => signIn('github')}
+                              onClick={() => window.location.href = "/api/auth/login"}
                             >
                               Sign in
                             </button>

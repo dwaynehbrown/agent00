@@ -8,14 +8,13 @@ import {
   Text
 } from '@tremor/react';
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
+interface Connection {
+  connection_id: string;
+  assign_memnbership_on_login: string;
+  connection: any;
 }
 
-export default function UsersTable({ users }: { users: User[] }) {
+export default function ConnectionsTable({ connections }: { connections: Connection[] }) {
   return (
     <Table>
       <TableHead>
@@ -26,14 +25,14 @@ export default function UsersTable({ users }: { users: User[] }) {
         </TableRow>
       </TableHead>
       <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell>{user.name}</TableCell>
+        {connections.map((connection) => (
+          <TableRow key={connection.connection_id}>
+            <TableCell>{connection?.name}</TableCell>
             <TableCell>
-              <Text>{user.username}</Text>
+              <Text>{connection.connection_id}</Text>
             </TableCell>
             <TableCell>
-              <Text>{user.email}</Text>
+              <Text>{connection?.email}</Text>
             </TableCell>
           </TableRow>
         ))}
