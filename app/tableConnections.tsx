@@ -8,6 +8,8 @@ import {
   Text
 } from '@tremor/react';
 
+import { Switch } from "@tremor/react";
+
 interface Connection {
   connection_id: string;
   assign_memnbership_on_login: string;
@@ -20,19 +22,21 @@ export default function ConnectionsTable({ connections }: { connections: Connect
       <TableHead>
         <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell>Username</TableHeaderCell>
-          <TableHeaderCell>Email</TableHeaderCell>
+          <TableHeaderCell>Strategy</TableHeaderCell>
+          <TableHeaderCell>Assign membership on login
+
+
+            
+          </TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {connections.map((connection) => (
           <TableRow key={connection.connection_id}>
-            <TableCell>{connection?.name}</TableCell>
-            <TableCell>
-              <Text>{connection.connection_id}</Text>
-            </TableCell>
-            <TableCell>
-              <Text>{connection?.email}</Text>
+            <TableCell>{connection?.connection?.name}</TableCell>
+            <TableCell>{connection?.connection?.strategy}</TableCell>
+            <TableCell> 
+             { connection?.assign_memnbership_on_login ? 'yes' : 'no'}
             </TableCell>
           </TableRow>
         ))}

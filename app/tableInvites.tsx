@@ -25,20 +25,24 @@ export default function InvitesTable({ invites }: { invites: Invite[] }) {
     <Table>
       <TableHead>
         <TableRow>
-          <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell>Invitename</TableHeaderCell>
           <TableHeaderCell>Email</TableHeaderCell>
+          <TableHeaderCell>Created</TableHeaderCell>
+          <TableHeaderCell>Expires</TableHeaderCell>
+          <TableHeaderCell>Invited By</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {invites.map((invite: any) => (
           <TableRow key={invite.id}>
-            <TableCell>{invite.name}</TableCell>
+            <TableCell>{invite?.invitee?.email}</TableCell>
             <TableCell>
-              <Text>{invite.client_id}</Text>
+              <Text>{new Date (invite?.created_at).toLocaleDateString ()}</Text>
             </TableCell>
             <TableCell>
-              <Text>{invite.expiers_at}</Text>
+              <Text>{new Date (invite?.expires_at).toLocaleDateString ()}</Text>
+            </TableCell>
+            <TableCell>
+              <Text>{invite?.inviter?.name}</Text>
             </TableCell>
           </TableRow>
         ))}
